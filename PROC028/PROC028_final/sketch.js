@@ -82,7 +82,7 @@ function draw() {
 
 }
 
-function mouseDreggad(){
+function mouseDraggad(){
     Matter.Body.setPosition(bird.body, {x:mouseX, y:mouseY});
 }
 function mouseReleased(){
