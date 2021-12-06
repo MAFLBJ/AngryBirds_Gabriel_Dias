@@ -48,17 +48,7 @@ function setup() {
     log4 = new Troncos(870, 120, 150, -PI / 7);
 
     bird = new Passaros(100, 100);
-    options = {
-        bodyA: bird.body,
-        bodyB: galio.body,
-        stffness: 0.04,
-        length: 20
-    }
-    ligacao = Condicao.create(options);
-    World.add(world, ligacao);
-
-
-
+    ligacao = new Galio(bird.body, galio.body, 0.04, 10)
 }
 
 function draw() {
@@ -87,10 +77,10 @@ function draw() {
 
     bird.display();
     galio.display();
+
+    ligacao.display();
     
-    strokeWeight(4);
-    line(bird.body.position.x, bird.body.position.y, galio.body.position.x, galio.body.position.y);
-}
+} 
 
 
 class BaseClass {
@@ -225,3 +215,25 @@ class Troncos extends BaseClass {
 
     }
 };
+
+class Galio{
+    constructor(bodyA, bodyB, stffness, length){
+        this.bodyA = bodyA;
+        this.bodyB = bodyB;
+        this.stffness = stffness;
+        this.length = length;
+
+        var options = {
+            bodyA: this.bodyA,
+            bodyB:this.bodyB,
+            stffness: this.stffness,
+            length: this.length
+        }
+        this.galio = Condicao.create(options);
+        World.add(world, this.galio);
+    }
+    display(){
+        strokeWeight(4);
+    line(this.bodyA.position.x, this.bodyA.position.y, this.bodyB.position.x, this.bodyB.position.y);
+    }
+}
