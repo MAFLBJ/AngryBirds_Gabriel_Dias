@@ -10,7 +10,7 @@ var solo, box1, box2, box3, box4, box5;
 var pig1, pig2;
 var log1, log2, log3, log4;
 var plataform;
-var galio, ligacao;
+var galio, estilingue;
 
 
 function preload() {
@@ -48,7 +48,7 @@ function setup() {
     log4 = new Troncos(870, 120, 150, -PI / 7);
 
     bird = new Passaros(100, 100);
-    ligacao = new Estilingue(bird.body, {x: 200, y:100}, 0.04, 10);
+    estilingue = new Estilingue(bird.body, {x:200, y:100}, 0.3, 10);
 }
 
 function draw() {
@@ -78,8 +78,15 @@ function draw() {
     bird.display();
     //galio.display();
 
-    ligacao.display();
+    estilingue.display();
 
+}
+
+function mouseDreggad(){
+    Matter.Body.setPosition(bird.body, {x:mouseX, y:mouseY});
+}
+function mouseReleased(){
+    estilingue.flying();
 }
 
 
@@ -126,8 +133,8 @@ class Passaros extends BaseClass {
         pos.y = mouseY;
         var angle = this.body.angle;
         */
-        this.body.position.x = mouseX;
-        this.body.position.y = mouseY;
+        /*this.body.position.x = mouseX;
+        this.body.position.y = mouseY;*/
 
         super.display();
     }
@@ -247,15 +254,23 @@ class Estilingue {
 
         var options = {
             bodyA: this.bodyA,
-            pontoB: this.pontoB,
+            pointB: this.pontoB,
             stffness: this.stffness,
             length: this.length
         }
-        this.estilinge = Condicao.create(options);
+        this.estilingue = Condicao.create(options);
         World.add(world, this.estilingue);
     }
+    flying() {
+        this.estilingue.bodyA = null;
+    }
     display() {
-        strokeWeight(4);
-        line(this.bodyA.position.x, this.bodyA.position.y, this.pontoB.position.x, this.pontoB.position.y);
+        if (this.estilingue.bodyA != null) {
+            push();
+            strokeWeight(4);
+            fill("black");
+            line(this.bodyA.position.x, this.bodyA.position.y, this.pontoB.x, this.pontoB.y);
+            pop();
+        }
     }
 }
