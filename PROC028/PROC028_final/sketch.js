@@ -48,7 +48,7 @@ function setup() {
     log4 = new Troncos(870, 120, 150, -PI / 7);
 
     bird = new Passaros(100, 100);
-    estilingue = new Estilingue(bird.body, {x:200, y:100}, 0.3, 10);
+    estilingue = new Estilingue(bird.body, {x:200, y:100}, 0.04, 10);
 }
 
 function draw() {
@@ -82,7 +82,7 @@ function draw() {
 
 }
 
-function mouseDraggad(){
+function mouseDragged(){
     Matter.Body.setPosition(bird.body, {x:mouseX, y:mouseY});
 }
 function mouseReleased(){
