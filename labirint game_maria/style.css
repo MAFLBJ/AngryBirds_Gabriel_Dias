@@ -1,0 +1,12 @@
+html, body {
+    margin: 0;
+    padding: 0;
+  }
+  canvas {
+    display: block;
+    margin: auto;
+    border: 10px solid #680808;
+    /*padding-left: 250px;
+    padding-top:100px;*/
+  }
+  
