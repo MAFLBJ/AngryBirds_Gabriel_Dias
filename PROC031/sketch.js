@@ -1,9 +1,16 @@
 //Tipos de armazenamento de dados:
 
+// numéricas
 var num = 0;
+// string
 var texto = "hello world";
-var boleano = isNaN(1);
+// bollean true ou false
+var boleano = isNaN("a");
+console.log(boleano);
 
+//Matrizes -> Arrays:
+var array1 = [[num, texto], boleano];
+console.log(array1[0][0])
 
 const Engine = Matter.Engine;//Módulo responsáveis pelas leis físicas que rejem o mundo
 const World = Matter.Composite;/* Modulo responsável pela coleção de Matter.Body, Matter.Constraint e outros objetos Matter.Composite. 
