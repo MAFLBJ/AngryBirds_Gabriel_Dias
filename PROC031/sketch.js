@@ -31,7 +31,7 @@ var catapulta1, catapulta2, catapulta3;
 var catapulta1IMG, catapulta2IMG, catapulta3IMG;
 
 
-/*
+
 function preload() {
     imgFundo = loadImage("sprites/bg.png");
 
@@ -106,7 +106,7 @@ function draw() {
     estilingue1.display();
 
 }
-*/
+
 function mouseDragged() {
     Matter.Body.setPosition(bird.body, { x: mouseX, y: mouseY });
 }
@@ -156,8 +156,14 @@ class Passaros extends BaseClass {
         }
         */
         this.image = loadImage("sprites/bird.png");
+        this.imagem = loadImage("sprites/smoke.png");
+        this.camin = [];
     }
     display() {
+        this.camin.push([this.body.position.x, this.body.position.y]);
+        for(var g = 0; g < this.camin.length; g = g+1){
+            image(this.imagem, this.camin[g][0], this.camin[g][1]);
+        };
         /*var pos = this.body.position;
         pos.x = mouseX;
         pos.y = mouseY;
