@@ -24,9 +24,12 @@ var catapulta1IMG, catapulta2IMG, catapulta3IMG;
 
 var estado = "repouso";
 
+var imgFundo;
+
 
 function preload() {
-    imgFundo = loadImage("sprites/bg.png");
+    //imgFundo = loadImage("sprites/bg.png");
+    getTime();
 
 }
 
@@ -34,7 +37,7 @@ function setup() {
     var canvas = createCanvas(1200, 400);
     engine = Engine.create();
     world = engine.world;
-    getTime();
+    
 
 
     rectMode(CENTER);
@@ -331,9 +334,16 @@ async function getTime(){
     var hora = datetime.slice(11, 13);
 
 
-    //var 
+     
 
     console.log(hora == 15);
+
+    if (hora >= 18 && hora <=6){
+        imgFundo= loadImage('sprites/bg.png');
+    }
+    else{
+        imgFundo= loadImage('sprites/bg2.jpg');
+    }
 
 }
 
