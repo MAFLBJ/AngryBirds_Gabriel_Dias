@@ -34,6 +34,7 @@ function setup() {
     var canvas = createCanvas(1200, 400);
     engine = Engine.create();
     world = engine.world;
+    getTime();
 
 
     rectMode(CENTER);
@@ -320,5 +321,19 @@ class Estilingue {
 
 
     }
+}
+
+async function getTime(){
+    var resposta = await fetch("http://worldtimeapi.org/api/timezone/America/Sao_Paulo");
+    var respostaJSON = await resposta.json();
+    
+    var datetime = respostaJSON.datetime;
+    var hora = datetime.slice(11, 13);
+
+
+    //var 
+
+    console.log(hora == 15);
+
 }
 
