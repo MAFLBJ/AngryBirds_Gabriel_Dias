@@ -23,21 +23,19 @@ var catapulta1, catapulta2, catapulta3;
 var catapulta1IMG, catapulta2IMG, catapulta3IMG;
 
 var estado = "repouso";
-
-var imgFundo;
-
+var imgFundo = "";
+var score = 0;
 
 function preload() {
-    //imgFundo = loadImage("sprites/bg.png");
-    getTime();
-
+    //imgFundo = loadImage("sprites/bg2.jpg");
+    pegaHora();
 }
 
 function setup() {
     var canvas = createCanvas(1200, 400);
     engine = Engine.create();
     world = engine.world;
-    
+    //pegaHora();
 
 
     rectMode(CENTER);
@@ -70,9 +68,12 @@ function setup() {
     estilingue1 = new Estilingue(bird.body, { x: 200, y: 50 }, 0.04, 10);
 
 }
-
 function draw() {
     background(imgFundo);
+    noStroke();
+    textSize(35);
+    fill("white");
+    text("Pontuação  " + score, width - 500, 50);
     Engine.update(engine);
     //textSize(24);
     //text(mouseX + "," + mouseY, 50, 50);
@@ -86,11 +87,13 @@ function draw() {
     box2.display();
 
     pig1.display();
+    pig1.score();
     log1.display();
 
     box3.display();
     box4.display();
     pig2.display();
+    pig2.score();
 
     log2.display();
 
@@ -118,7 +121,37 @@ function keyPressed() {
         estilingue1.ataque(bird.body);
     }
 }
+async function pegaHora() {
+    //carregando os dados:
+    let DadosHoraAtual = await fetch("http://worldtimeapi.org/api/timezone/America/Sao_Paulo");
+    //console.log(DadosHoraAtual);
+    //convertendo para o formato JSON
+    let DadosHoraAtual_JSON = await DadosHoraAtual.json();
+    //console.log(DadosHoraAtual_JSON.datetime);
+    // Reservando a informação necessária: hora atual!
+    let horaAtual = DadosHoraAtual_JSON.datetime.slice(11, 13);
+    //console.log(horaAtual);
 
+
+    if (horaAtual > 6 && horaAtual <= 15) {
+        imgFundo = loadImage("sprites/bg.png");
+    } else {
+        imgFundo = loadImage("sprites/bg2.jpg");
+    }
+
+    //console.log(horaAtual <= 18)
+    //convertendo de formato string para númerico  
+    //console.log(typeof horaAtual.split(",").map(Number)[0]);
+    //return horaAtual.split(",").map(Number)[0];
+
+
+    // Reservando a informação necessária: hora atual!
+    //let horaAtual = DadosHoraAtual_JSON.datetime[11]+DadosHoraAtual_JSON.datetime[12] 
+    //convertendo de formato string para númerico  
+    //console.log(typeof horaAtual.split(",").map(Number)[0]);
+    //return horaAtual.split(",").map(Number)[0];
+
+}
 class BaseClass {
     constructor(x, y, largura, altura, angulo) {
         this.posX = x;
@@ -147,10 +180,13 @@ class BaseClass {
 class Passaros extends BaseClass {
     constructor(x, y) {
         super(x, y, 50, 50);
-
-        this.body.density = 1.5;
-        this.body.friction = 1.0;
-        this.body.restitution = 0.5;
+        /*
+        var options = {
+            'density': 1.5,
+            'friction': 1.0,
+            'restitution': 0.5
+        }
+        */
         this.image = loadImage("sprites/bird.png");
         this.fumaca = loadImage("sprites/smoke.png");
         //criar uma array para armazenar a trajetória do bird:
@@ -166,10 +202,7 @@ class Passaros extends BaseClass {
         */
         //this.body.position.x = mouseX;
         //this.body.position.y = mouseY;
-
         super.display();
-
-
         if (this.body.velocity.x > 10 && this.body.position.x > 200) {
             var posicaoBird = [this.body.position.x, this.body.position.y];
             this.arrayBird.push(posicaoBird);
@@ -177,22 +210,19 @@ class Passaros extends BaseClass {
         for (var count = 0; count < this.arrayBird.length; count++) {
             image(this.fumaca, this.arrayBird[count][0], this.arrayBird[count][1]);
         }
-
-
-
     }
-
-
 }
 
 class Caixas extends BaseClass {
     constructor(x, y, largura, altura) {
         super(x, y, largura, altura);
-
-        this.body.restitution = 0.8;
-        this.body.friction = 1.0;
-        this.body.density = 1.0;
-
+        /*
+        var options = {
+            'restitution': 0.8,
+            'friction': 1.0,
+            'density': 1.0
+        }
+        */
         this.image = loadImage("sprites/wood1.png");
 
     }
@@ -228,10 +258,13 @@ class Solo {
 class Porcos extends BaseClass {
     constructor(x, y) {
         super(x, y, 50, 50);
-
-        this.body.restitution = 0.8;
-        this.body.friction = 0.3;
-        this.body.density = 1.0;
+        /*
+                var options = {
+                    'restitution': 0.8,
+                    'friction': 0.3,
+                    'density': 1.0
+                }
+                */
         this.image = loadImage("sprites/enemy.png");
         this.visibility = 255;
 
@@ -246,29 +279,35 @@ class Porcos extends BaseClass {
             tint(255, this.visibility);
             image(this.image, this.body.position.x, this.body.position.y, 50, 50);
             pop();
-
         }
         //console.log(this.body.speed);
         //text(this.body.speed, 70, 80);
-
-
+    }
+    score() {
+        if (this.visibility < 0 && this.visibility > -2) {
+            score++;
+        }
     }
 }
 
 class Troncos extends BaseClass {
     constructor(x, y, altura, angulo) {
         super(x, y, 20, altura, angulo);
-        this.body.restitution = 0.8;
-        this.body.friction = 1.0;
-        this.body.density = 1.0;     
+        /*
+        var options = {
+            'restitution': 0.8,
+            'friction': 1.0,
+            'density': 1.0
+        }
+        */
         this.image = loadImage("sprites/wood2.png");
-Matter.Body.setAngle(this.body, angulo);
+        Matter.Body.setAngle(this.body, angulo);
 
     }
-display() {
-    super.display();
+    display() {
+        super.display();
 
-}
+    }
 };
 
 class Estilingue {
@@ -324,26 +363,5 @@ class Estilingue {
 
 
     }
-}
-
-async function getTime(){
-    var resposta = await fetch("http://worldtimeapi.org/api/timezone/America/Sao_Paulo");
-    var respostaJSON = await resposta.json();
-    
-    var datetime = respostaJSON.datetime;
-    var hora = datetime.slice(11, 13);
-
-
-     
-
-    console.log(hora == 15);
-
-    if (hora >= 18 && hora <=6){
-        imgFundo= loadImage('sprites/bg.png');
-    }
-    else{
-        imgFundo= loadImage('sprites/bg2.jpg');
-    }
-
 }
 
